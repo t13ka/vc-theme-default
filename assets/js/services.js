@@ -144,7 +144,7 @@ storefrontApp.service('cartService', ['$http', function ($http) {
         addCoupon: function (couponCode) {
             return $http.post('storefrontapi/cart/coupons/' + couponCode);
         },
-        removeCoupon: function (couponCode) {            
+        removeCoupon: function (couponCode) {
             return $http.delete('storefrontapi/cart/coupons?couponCode=' + couponCode);
         },
         validateCoupon: function (coupon) {
@@ -255,4 +255,18 @@ storefrontApp.service('orderService', ['$http', function ($http) {
             return $http.get('storefrontapi/orders/' + orderNumber + '?t=' + new Date().getTime());
         }
     }
+}]);
+
+storefrontApp.service('customerReviewService', ['$http', function($http) {
+    return {
+        getCustomerReviews: function(criteria) {
+            return $http.post('storefrontapi/customerReview/search' , criteria);
+        },
+        addCustomerReview: function (review) {
+            return $http.post('storefrontapi/customerReview', review);
+        },
+        getProductRating: function(productId) {
+            return $http.get('storefrontapi/customerReview/rating?productId=' + productId);
+        }
+    };
 }]);
