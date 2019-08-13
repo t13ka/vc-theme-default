@@ -203,7 +203,7 @@
                 <li ng-repeat="review in productReviews">
                     {{review.authorNickname}} - {{review.content}}
                     <br>
-                    <time datetime="{{ review.created_date }}" <em class="text-light">{{ review.createdDate }}</em>
+                    <em class="text-light">{{ review.createdDate | date:'medium' }}</em>
                     </time>
                     <input id="{{ review.id }}" type="number" class="rating rating-loading" value="{{ review.rating }}"
                         data-min="0" data-max="5" data-step="0.5" data-size="sm" data-disabled="true" data-show-clear="false"
