@@ -196,7 +196,9 @@
 
         {% raw %}
         <div ng-if="productReviews.length">
-            <h4>Customer Reviews</h4>
+        {% endraw %}
+                <h4>{{ 'products.product.customer_reviews' | t}}</h4>
+        {% raw %}
             <ul>
                 <li ng-repeat="review in productReviews">
                     {{review.authorNickname}} - {{review.content}}
@@ -212,7 +214,6 @@
 
         <div>
             <div class="form-group">
-                <label for="customerReview">Your text</label>
                 <textarea class="form-control rounded-0" ng-model="customerReview" id="customerReview" rows="3"></textarea>
             </div>
             <input ng-model="customerRating" type="number" class="rating rating-loading" data-min="0" data-max="5"

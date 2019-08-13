@@ -728,7 +728,8 @@
             "add_to_cart": "Add to Cart",
             "details_tab": "Product details",
             "vat": "Inc VAT",
-            "subscription_period": "Subscription with a period:"
+            "subscription_period": "Subscription with a period:",
+            "customer_reviews" : "Customer Reviews"
         },
         "compare_list": {
             "add_to_compare": "Add to compare",
@@ -851,6 +852,6 @@
         "customer_password_confirmation": "Password confirmation is invalid or required",
         "customer_token": "Code is invalid or required",
         "customer_email": "Email is invalid or required"
-       
+
     }
 }
