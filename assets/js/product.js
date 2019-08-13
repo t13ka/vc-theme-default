@@ -1,7 +1,7 @@
 var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'customerService', 'listService', '$localStorage',
-    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, quoteRequestService, customerService, listService, $localStorage) {
+storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'customerService', 'listService', '$localStorage', 'customerReviewService', '$timeout',
+    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, quoteRequestService, customerService, listService, $localStorage, customerReviewService, $timeout) {
         //TODO: prevent add to cart not selected variation
         // display validator please select property
         // display price range
@@ -15,6 +15,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         $scope.addToWishlistDisabled = false;
         $scope.availableLists = null;
         $scope.listType = null;
+        $scope.productReviews = [];
 
         $scope.addProductToCart = function (product, quantity) {
             var dialogData = toDialogDataModel(product, quantity);
@@ -44,10 +45,62 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
                 $rootScope.$broadcast('actualQuoteRequestItemsChanged');
             });
         };
-        
+
         $scope.initAvailableLists = function(lists) {
             $scope.listType = lists.default_list_type;
         }
+
+        $scope.getCustomerReviews = function (productId) {
+            var draftCriteria = {
+                productIds: [productId],
+                pageNumber: 1,
+                pageSize: 5,
+            };
+            customerReviewService.getCustomerReviews(draftCriteria).then(function (response) {
+                if (response.data) {
+                    $scope.productReviews = response.data;
+                    $scope.initRatingControls();
+                }
+            });
+        };
+
+        $scope.getProductRating = function (productId) {
+            customerReviewService.getProductRating(productId).then(function (response) {
+                if (response.data) {
+                    $timeout(function () {
+                        $('#totalProductRatingId').rating("update", response.data);
+                    });
+                }
+            });
+        };
+
+        $scope.initRatingControls = function () {
+            // init controls after render
+            $timeout(function () {
+                $(".rating.rating-loading").each(function() {
+                    $(this).rating();
+                  });
+            });
+        }
+
+        $scope.addCustomerReview = function () {
+            if($scope.customer === null) {
+                throw Error("a customer is not defined")
+            }
+
+            var draftReview = {
+                id: $scope.customer.id,
+                productId: $scope.selectedVariation.id,
+                content: $scope.customerReview,
+                authorNickname: $scope.customer.fullName,
+                rating: $scope.customerRating
+            };
+            customerReviewService.addCustomerReview(draftReview).then(function () {
+                $scope.getCustomerReviews($scope.selectedVariation.id);
+                $scope.getProductRating($scope.selectedVariation.id);
+                $scope.customerReview = '';
+            });
+        };
 
         function toDialogDataModel(product, quantity) {
             return {
@@ -81,6 +134,8 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
                 });
 
                 $scope.selectedVariation = product;
+                $scope.getCustomerReviews(product.id);
+                $scope.getProductRating(product.id);
             });
         };
 

@@ -1,3 +1,7 @@
+{{ '//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css' | stylesheet_tag }}
+{{ 'static/bundle/star-rating.css' | asset_url | stylesheet_tag }}
+{{ 'bundle/star-rating.js' | static_asset_url | append_version | script_tag }}
+
 {% include 'breadcrumb' %}
 
 <div class="grid" itemscope itemtype="http://schema.org/Product" ng-controller="productController" ng-init='initAvailableLists({{ settings.lists | json }})'>
@@ -32,6 +36,8 @@
     <div class="grid-item large--three-fifths">
         <h2 itemprop="name">{{ product.title }}</h2>
 
+        <input id="totalProductRatingId" type="number" class="rating rating-loading" data-min="0" data-max="5" data-step="0.5"
+            data-size="sm" data-disabled="true" data-show-clear="false" data-show-caption="false">
         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 
             {% assign variant = product.selected_or_first_available_variant %}
@@ -148,13 +154,13 @@
                 {% if settings.product_compare_enabled %}
                     <add-to-compare-button ng-if="selectedVariation.id" product-id="selectedVariation.id"></add-to-compare-button>
                 {% endif %}
-                 <button id="addToWishlist" class="btn btn-clearfix list-btn-alignment" type="button" 
+                 <button id="addToWishlist" class="btn btn-clearfix list-btn-alignment" type="button"
                          ng-show="customer.isRegisteredUser"
                          ng-disabled="addToWishlistDisabled"
                          ng-click="addProductToWishlist(selectedVariation,$scope.listContains)">
                       <span class="fa fa-file-text list-icon-clearfix"></span>
-                      <span>{{ 'products.list.add_to_myList' | t }}</span>                      
-                 </button>                
+                      <span>{{ 'products.list.add_to_myList' | t }}</span>
+                 </button>
                 <span id="variantQuantity" class="variant-quantity"></span>
             </form>
             <hr>
@@ -187,6 +193,34 @@
             </div>
         </div>
         {% endif %}
+
+        {% raw %}
+        <div ng-if="productReviews.length">
+            <h4>Customer Reviews</h4>
+            <ul>
+                <li ng-repeat="review in productReviews">
+                    {{review.authorNickname}} - {{review.content}}
+                    <br>
+                    <time datetime="{{ review.created_date }}" <em class="text-light">{{ review.createdDate }}</em>
+                    </time>
+                    <input id="{{ review.id }}" type="number" class="rating rating-loading" value="{{ review.rating }}"
+                        data-min="0" data-max="5" data-step="0.5" data-size="sm" data-disabled="true" data-show-clear="false"
+                        data-show-caption="true">
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            <div class="form-group">
+                <label for="customerReview">Your text</label>
+                <textarea class="form-control rounded-0" ng-model="customerReview" rows="3"></textarea>
+            </div>
+            <input ng-model="customerRating" type="number" class="rating rating-loading" data-min="0" data-max="5"
+                data-step="0.5" data-size="lg" data-show-clear="false">
+            <button type="reset" class="btn btn-primary" ng-click="addCustomerReview()">Save Review</button>
+        </div>
+        {% endraw %}
+
     </div>
 </div>
 
@@ -225,10 +259,10 @@
 </script>
 
     {% if settings.related_products_enable %}
-    {% assign grid_item_width = 'large--one-fifth medium--one-third small--one-half' %}   
+    {% assign grid_item_width = 'large--one-fifth medium--one-third small--one-half' %}
 
     {% include 'related-products' %}
-   
+
     {% endif %}
 
     {% if settings.product_reviews_enable %}
