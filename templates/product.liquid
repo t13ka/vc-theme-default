@@ -213,14 +213,13 @@
         <div>
             <div class="form-group">
                 <label for="customerReview">Your text</label>
-                <textarea class="form-control rounded-0" ng-model="customerReview" rows="3"></textarea>
+                <textarea class="form-control rounded-0" ng-model="customerReview" id="customerReview" rows="3"></textarea>
             </div>
             <input ng-model="customerRating" type="number" class="rating rating-loading" data-min="0" data-max="5"
                 data-step="0.5" data-size="lg" data-show-clear="false">
-            <button type="reset" class="btn btn-primary" ng-click="addCustomerReview()">Save Review</button>
+            <button type="reset" class="btn btn-primary" ng-click="addCustomerReview()" ng-disabled="!isCustomerAuthorized()">Save Review</button>
         </div>
         {% endraw %}
-
     </div>
 </div>
 

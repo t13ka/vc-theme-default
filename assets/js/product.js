@@ -84,8 +84,12 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         }
 
         $scope.addCustomerReview = function () {
-            if($scope.customer === null) {
+            if($scope.customer == null) {
                 throw Error("a customer is not defined")
+            }
+
+            if($scope.customer.fullName == null){
+                throw Error("a customer full name is not defined")
             }
 
             var draftReview = {
@@ -98,9 +102,20 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             customerReviewService.addCustomerReview(draftReview).then(function () {
                 $scope.getCustomerReviews($scope.selectedVariation.id);
                 $scope.getProductRating($scope.selectedVariation.id);
-                $scope.customerReview = '';
             });
         };
+
+        $scope.isCustomerAuthorized = function() {
+            if ($scope.customer == null) {
+                return false;
+            }
+
+            if ($scope.customer.fullName == null) {
+                return false;
+            }
+
+            return true;
+        }
 
         function toDialogDataModel(product, quantity) {
             return {
