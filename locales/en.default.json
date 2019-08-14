@@ -729,7 +729,8 @@
             "details_tab": "Product details",
             "vat": "Inc VAT",
             "subscription_period": "Subscription with a period:",
-            "customer_reviews" : "Customer Reviews"
+            "customer_reviews" : "Customer Reviews",
+            "save_review" : "Save Review"
         },
         "compare_list": {
             "add_to_compare": "Add to compare",
