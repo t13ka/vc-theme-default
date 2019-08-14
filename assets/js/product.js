@@ -105,18 +105,6 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             });
         };
 
-        $scope.isCustomerAuthorized = function() {
-            if ($scope.customer == null) {
-                return false;
-            }
-
-            if ($scope.customer.fullName == null) {
-                return false;
-            }
-
-            return true;
-        }
-
         function toDialogDataModel(product, quantity) {
             return {
                 imageUrl: product.primaryImage ? product.primaryImage.url : null,

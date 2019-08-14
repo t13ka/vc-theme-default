@@ -196,9 +196,7 @@
 
         {% raw %}
         <div ng-if="productReviews.length">
-        {% endraw %}
-                <h4>{{ 'products.product.customer_reviews' | t}}</h4>
-        {% raw %}
+            <h4>{% endraw %}{{ 'products.product.customer_reviews' | t}}{% raw %}</h4>
             <ul>
                 <li ng-repeat="review in productReviews">
                     {{review.authorNickname}} - {{review.content}}
@@ -211,16 +209,24 @@
                 </li>
             </ul>
         </div>
+        {% endraw %}
 
+        {% if customer and customer.is_registered_user %}
         <div>
+            {% raw %}
             <div class="form-group">
                 <textarea class="form-control rounded-0" ng-model="customerReview" id="customerReview" rows="3"></textarea>
             </div>
             <input ng-model="customerRating" type="number" class="rating rating-loading" data-min="0" data-max="5"
                 data-step="0.5" data-size="lg" data-show-clear="false">
-            <button type="reset" class="btn btn-primary" ng-click="addCustomerReview()" ng-disabled="!isCustomerAuthorized()">Save Review</button>
+
+            <button type="reset" class="btn btn-primary" ng-click="addCustomerReview()">
+                {% endraw %}{{ 'products.product.save_review' | t}}{% raw %}
+            </button>
+            {% endraw %}
         </div>
-        {% endraw %}
+
+        {% endif %}
     </div>
 </div>
 
