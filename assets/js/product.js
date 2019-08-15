@@ -1,5 +1,6 @@
 var storefrontApp = angular.module('storefrontApp');
 
+// eslint-disable-next-line angular/controller-name
 storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'customerService', 'listService', '$localStorage', 'customerReviewService', '$timeout',
     function ($rootScope, $scope, $window, dialogService, catalogService, cartService, quoteRequestService, customerService, listService, $localStorage, customerReviewService, $timeout) {
         //TODO: prevent add to cart not selected variation
@@ -68,7 +69,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             customerReviewService.getProductRating(productId).then(function (response) {
                 if (response.data) {
                     $timeout(function () {
-                        $('#totalProductRatingId').rating("update", response.data);
+                        angular.element("#totalProductRatingId").rating("update", response.data);
                     });
                 }
             });
@@ -77,8 +78,8 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         $scope.initRatingControls = function () {
             // init controls after render
             $timeout(function () {
-                $(".rating.rating-loading").each(function() {
-                    $(this).rating();
+                angular.element(".rating.rating-loading").each(function(_, elem) {
+                    angular.element(elem).rating();
                   });
             });
         }
