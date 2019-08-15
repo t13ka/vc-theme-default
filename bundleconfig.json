@@ -61,5 +61,19 @@
             "assets/account-bootstrap.css",
             "assets/common-components.css"
         ]
+    },
+
+    {
+        "outputFileName": "assets/static/bundle/star-rating.css",
+        "inputFiles": [
+            "node_modules/bootstrap-star-rating/css/star-rating.css"
+        ]
+    }
+    ,
+    {
+        "outputFileName": "assets/static/bundle/star-rating.js",
+        "inputFiles": [
+            "node_modules/bootstrap-star-rating/js/star-rating.js"
+        ]
     }
 ]
